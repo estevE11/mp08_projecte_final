@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 4;
+    private static final int database_VERSION = 1;
 
     // database name
     private static final String database_NAME = "store";
@@ -28,9 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 "CREATE TABLE zones ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT NOT NULL," +
-                        "description DATE NOT NULL," +
-                        "description DATE NOT NULL," +
-                        "quantity INT NOT NULL)",
+                        "description DATE NOT NULL)",
 
                 "CREATE TABLE types ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT NOT NULL)"
