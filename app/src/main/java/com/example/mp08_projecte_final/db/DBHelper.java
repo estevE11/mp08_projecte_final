@@ -22,7 +22,15 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] tables = new String[]{
                 "CREATE TABLE machines ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT UNIQUE NOT NULL," +
+                        "client_name TEXT NOT NULL," +
+                        "adress TEXT NOT NULL," +
+                        "zip_code TEXT NOT NULL," +
+                        "city TEXT NOT NULL," +
                         "description TEXT NOT NULL," +
+                        "telf TEXT NOT NULL," +
+                        "email TEXT," +
+                        "serial_number TEXT NOT NULL," +
+                        "last_check DATE," +
                         "id_zone INT NOT NULL," +
                         "id_type INT NOT NULL)",
 
