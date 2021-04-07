@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CREATE TABLE machines ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT UNIQUE NOT NULL," +
                         "client_name TEXT NOT NULL," +
-                        "adress TEXT NOT NULL," +
+                        "address TEXT NOT NULL," +
                         "zip_code TEXT NOT NULL," +
                         "city TEXT NOT NULL," +
                         "description TEXT NOT NULL," +
@@ -36,6 +36,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 "CREATE TABLE zones ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT NOT NULL," +
+                        "longitude DECIMAL(9,6) NOT NULL," +
+                        "latitude Decimal(8,6) NOT NULL," +
                         "description DATE NOT NULL)",
 
                 "CREATE TABLE types ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
