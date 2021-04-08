@@ -6,7 +6,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.ContentValues;
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.example.mp08_projecte_final.db.DBDatasource;
 import com.example.mp08_projecte_final.fragments.FragmentMachineTypes;
@@ -73,4 +75,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }}

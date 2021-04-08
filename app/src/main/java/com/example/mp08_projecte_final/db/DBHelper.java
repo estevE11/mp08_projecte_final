@@ -8,10 +8,10 @@ import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 1;
+    private static final int database_VERSION = 4;
 
     // database name
-    private static final String database_NAME = "store";
+    private static final String database_NAME = "buidem";
 
     public DBHelper(Context context) {
         super(context, database_NAME, null, database_VERSION);
@@ -26,8 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "address TEXT NOT NULL," +
                         "zip_code TEXT NOT NULL," +
                         "city TEXT NOT NULL," +
-                        "description TEXT NOT NULL," +
-                        "telf TEXT NOT NULL," +
+                        "telf TEXT," +
                         "email TEXT," +
                         "serial_number TEXT NOT NULL," +
                         "last_check DATE," +
@@ -36,8 +35,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 "CREATE TABLE zones ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name TEXT NOT NULL," +
-                        "longitude DECIMAL(9,6) NOT NULL," +
-                        "latitude Decimal(8,6) NOT NULL," +
+                        "lat DECIMAL(9,6) NOT NULL," +
+                        "lon Decimal(8,6) NOT NULL," +
                         "description DATE NOT NULL)",
 
                 "CREATE TABLE types ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
