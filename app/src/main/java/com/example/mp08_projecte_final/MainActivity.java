@@ -7,8 +7,11 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.example.mp08_projecte_final.db.DBDatasource;
 import com.example.mp08_projecte_final.fragments.FragmentMachineTypes;
@@ -16,6 +19,9 @@ import com.example.mp08_projecte_final.fragments.FragmentMachines;
 import com.example.mp08_projecte_final.fragments.FragmentMap;
 import com.example.mp08_projecte_final.fragments.FragmentZones;
 import com.example.mp08_projecte_final.fragments.FragmentsSlideAdapter;
+import com.example.mp08_projecte_final.managers.MachineManager;
+import com.example.mp08_projecte_final.managers.TypeManager;
+import com.example.mp08_projecte_final.managers.ZoneManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -74,10 +80,40 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+
+    }
+
+    private void openCreateMachineActivity() {
+        Intent intent = new Intent(getApplicationContext(), MachineManager.class);
+        startActivity(intent);
+    }
+    private void openCreateZoneActivity() {
+        Intent intent = new Intent(getApplicationContext(), ZoneManager.class);
+        startActivity(intent);
+    }
+    private void openCreateTypeActivity() {
+        Intent intent = new Intent(getApplicationContext(), TypeManager.class);
+        startActivity(intent);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }}
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btn_add_machine:
+                this.openCreateMachineActivity();
+                return false;
+            case R.id.btn_add_zones:
+                this.openCreateZoneActivity();
+                return false;
+            case R.id.btn_add_type:
+                this.openCreateTypeActivity();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
