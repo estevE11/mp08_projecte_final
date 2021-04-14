@@ -20,12 +20,24 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="48dp"
-        android:layout_height="37dp"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="X"
+        android:textColorHighlight="@color/color4"
+        android:textColorLink="@color/color4"
+        app:icon="@drawable/ic_baseline_delete_forever_24"
         app:layout_constraintBottom_toBottomOf="@+id/txt_name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name" />
+
+    <Button
+        android:id="@+id/btn_delete2"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:icon="@drawable/ic_baseline_create_24"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_name"
+        app:layout_constraintEnd_toStartOf="@+id/btn_delete"
         app:layout_constraintTop_toTopOf="@+id/txt_name" />
 
     <View
