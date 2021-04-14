@@ -3,6 +3,7 @@ package com.example.mp08_projecte_final.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
 
     public TypesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_type, c,
-                new String[]{"name"}, // from
+                new String[]{"name", "color"}, // from
                 new int[]{R.id.txt_name},
                 1); // to
     }
@@ -51,6 +52,16 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
 
         String name = c.getString(0);
         TextView txt_name = (TextView)item.findViewById(R.id.txt_name);
+
+        int clr = 0;
+        String color = c.getString(2);
+        Log.d("asdf", "color " + color);
+        if(color == null) {
+            color = "-14654801";
+        }
+        Log.d("asdf", "color " + color);
+        clr = Integer.parseInt(color);
+        item.findViewById(R.id.view_type_color).setBackgroundColor(clr);
 
         return(item);
     }
