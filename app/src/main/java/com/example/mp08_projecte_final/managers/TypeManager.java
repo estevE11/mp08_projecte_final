@@ -1,29 +1,21 @@
 package com.example.mp08_projecte_final.managers;
 
-import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
-
-import com.example.mp08_projecte_final.MainActivity;
-import com.example.mp08_projecte_final.db.DBDatasource;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.mp08_projecte_final.MainActivity;
 import com.example.mp08_projecte_final.R;
+import com.example.mp08_projecte_final.db.DBDatasource;
 
-import java.util.Queue;
-
-import dev.sasikanth.colorsheet.ColorSheet;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class TypeManager extends AppCompatActivity {
@@ -33,17 +25,7 @@ public class TypeManager extends AppCompatActivity {
     private boolean editMode = false;
     private int typeId = 0;
 
-    private int[] colors = new int[] {
-            0x000000,
-            0xff0000,
-            0x00ff00,
-            0x0000ff,
-            0xff00ff,
-            0xffff00,
-            0x00ffff,
-    };
-
-    private int current_selected_color = 0;
+    private int current_selected_color = -11419154;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +42,9 @@ public class TypeManager extends AppCompatActivity {
         if(this.editMode) {
             this.typeId = b.getInt("id");
             this.loadData();
+        } else {
+            this.current_selected_color = -11419154;
+            ((View)findViewById(R.id.view_type_color)).setBackgroundColor(this.current_selected_color);
         }
 
         findViewById(R.id.button_type_save).setOnClickListener(new View.OnClickListener() {
@@ -73,6 +58,7 @@ public class TypeManager extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ColorPicker colorPicker = new ColorPicker(TypeManager.this);
+                colorPicker.setDefaultColorButton(current_selected_color != 0 ? current_selected_color : -11419154);
                 colorPicker.show();
                 colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     @Override
