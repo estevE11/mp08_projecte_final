@@ -3,6 +3,7 @@ package com.example.mp08_projecte_final.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,8 @@ class ZonesItemListAdapter extends SimpleCursorAdapter {
 
     public ZonesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_zone, c,
-                new String[]{"name", "description"}, // from
-                new int[]{R.id.txt_type_name, R.id.txt_description},
+                new String[]{"name"}, // from
+                new int[]{R.id.txt_zone_name},
                 1); // to
     }
 
@@ -49,11 +50,9 @@ class ZonesItemListAdapter extends SimpleCursorAdapter {
 
         Cursor c = (Cursor) getItem(position);
 
-        String name = c.getString(0);
-        TextView txt_name = (TextView)item.findViewById(R.id.txt_type_name);
-
-        String serial_number = c.getString(1);
-        TextView txt_serial_number = (TextView)item.findViewById(R.id.txt_description);
+        String name = c.getString(1);
+        Log.d("asdf", name);
+        ((TextView)item.findViewById(R.id.txt_zone_name)).setText(name);
 
         return(item);
     }

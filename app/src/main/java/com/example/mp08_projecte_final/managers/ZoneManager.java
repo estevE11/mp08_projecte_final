@@ -43,8 +43,8 @@ public class ZoneManager extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("latitude", 12.0);
-        values.put("longitude", 12);
+        values.put("lat", 12.0);
+        values.put("lon", 12);
         values.put("description", "buenas");
         this.db.insertZone(values);
         this.openMainActivity();

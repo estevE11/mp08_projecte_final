@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/txt_type_name"
+        android:id="@+id/txt_zone_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -17,23 +17,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_type_name"
-        app:layout_constraintStart_toEndOf="@+id/txt_type_name"
-        app:layout_constraintTop_toTopOf="@+id/txt_type_name" />
-
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="48dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
         android:text="X"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_type_name"
+        app:icon="@drawable/ic_baseline_delete_forever_24"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_zone_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_type_name" />
+        app:layout_constraintTop_toTopOf="@+id/txt_zone_name" />
+
+    <Button
+        android:id="@+id/btn_zone_edit"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:text="X"
+        app:icon="@drawable/ic_baseline_create_24"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_zone_name"
+        app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+        app:layout_constraintTop_toTopOf="@+id/txt_zone_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>
