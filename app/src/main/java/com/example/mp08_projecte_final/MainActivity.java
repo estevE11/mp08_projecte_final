@@ -93,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
     }
     private void openCreateTypeActivity() {
         Intent intent = new Intent(getApplicationContext(), TypeManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", false);
+
+        intent.putExtras(b);
+
         startActivity(intent);
     }
 

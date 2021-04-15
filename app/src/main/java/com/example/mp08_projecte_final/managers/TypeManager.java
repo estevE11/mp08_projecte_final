@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import com.example.mp08_projecte_final.MainActivity;
@@ -14,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,6 +29,9 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 public class TypeManager extends AppCompatActivity {
 
     private DBDatasource db;
+
+    private boolean editMode = false;
+    private int typeId = 0;
 
     private int[] colors = new int[] {
             0x000000,
@@ -48,6 +53,14 @@ public class TypeManager extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.db = new DBDatasource(this);
+
+        Bundle b = this.getIntent().getExtras();
+        this.editMode = b.getBoolean("editMode");
+
+        if(this.editMode) {
+            this.typeId = b.getInt("id");
+            this.loadData();
+        }
 
         findViewById(R.id.button_type_save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,13 +89,26 @@ public class TypeManager extends AppCompatActivity {
         });
     }
 
+    public void loadData() {
+        Log.d("asdf", ""+this.typeId);
+        Cursor type_data = this.db.getType(this.typeId);
+        type_data.moveToFirst();
+        String name = type_data.getString(1);
+        int color = type_data.getInt(2);
+
+        ((TextView)findViewById(R.id.input_type_name)).setText(name);
+        ((View)findViewById(R.id.view_type_color)).setBackgroundColor(color);
+        this.current_selected_color = color;
+    }
+
     public void submit() {
         String name = ((TextView)findViewById(R.id.input_type_name)).getText().toString();
 
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("color", this.current_selected_color);
-        this.db.insertType(values);
+        if(!this.editMode) this.db.insertType(values);
+        else this.db.updateType(this.typeId, values);
         this.openMainActivity();
     }
 

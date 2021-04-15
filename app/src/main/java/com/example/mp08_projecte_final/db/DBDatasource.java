@@ -45,7 +45,7 @@ public class DBDatasource {
     }
 
     public Cursor getZone(int id) {
-        return dbR.rawQuery("select * from machines where _id=" + (id), null);
+        return dbR.rawQuery("select * from zones where _id=" + (id), null);
     }
 
     public Cursor getTypes() {
@@ -53,7 +53,7 @@ public class DBDatasource {
     }
 
     public Cursor getType(int id) {
-        return dbR.rawQuery("select * from machines where _id=" + (id), null);
+        return dbR.rawQuery("select * from types where _id=" + (id), null);
     }
 
     // Create

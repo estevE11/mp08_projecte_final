@@ -1,6 +1,7 @@
 package com.example.mp08_projecte_final.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.mp08_projecte_final.MainActivity;
 import com.example.mp08_projecte_final.R;
 import com.example.mp08_projecte_final.db.DBDatasource;
+import com.example.mp08_projecte_final.managers.MachineManager;
+import com.example.mp08_projecte_final.managers.TypeManager;
 
 public class FragmentMachineTypes extends Fragment {
     private DBDatasource db;
@@ -35,13 +39,14 @@ public class FragmentMachineTypes extends Fragment {
 }
 
 class TypesItemListAdapter extends SimpleCursorAdapter {
-    private Context conxtext;
+    private Context context;
 
     public TypesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_type, c,
                 new String[]{"name", "color"}, // from
                 new int[]{R.id.txt_name},
                 1); // to
+        this.context = context;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,19 +55,40 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
 
         Cursor c = (Cursor) getItem(position);
 
-        String name = c.getString(0);
+        int name_idx = c.getColumnIndex("name");
+        String name = c.getString(name_idx);
         TextView txt_name = (TextView)item.findViewById(R.id.txt_name);
 
         int clr = 0;
         String color = c.getString(2);
-        Log.d("asdf", "color " + color);
         if(color == null) {
             color = "-14654801";
         }
-        Log.d("asdf", "color " + color);
         clr = Integer.parseInt(color);
         item.findViewById(R.id.view_type_color).setBackgroundColor(clr);
 
+        item.findViewById(R.id.btn_type_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id_idx = c.getColumnIndex("_id");
+                int id = c.getInt(id_idx);
+                Log.d("asdf", "ID Index: " + id_idx + " - ID: " + id);
+                openEditTypeActivity(id);
+            }
+        });
+
         return(item);
+    }
+
+    private void openEditTypeActivity(int id) {
+        Intent intent = new Intent(context.getApplicationContext(), TypeManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", true);
+        b.putInt("id", id);
+
+        intent.putExtras(b);
+
+        context.startActivities(new Intent[]{intent});
     }
 }
