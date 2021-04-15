@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.mp08_projecte_final.MainActivity;
 import com.example.mp08_projecte_final.R;
 import com.example.mp08_projecte_final.db.DBDatasource;
-import com.example.mp08_projecte_final.managers.MachineManager;
 import com.example.mp08_projecte_final.managers.TypeManager;
 
 public class FragmentMachineTypes extends Fragment {
@@ -44,7 +42,7 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
     public TypesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_type, c,
                 new String[]{"name", "color"}, // from
-                new int[]{R.id.txt_name},
+                new int[]{R.id.txt_type_name},
                 1); // to
         this.context = context;
     }
@@ -54,10 +52,13 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
         View item = super.getView(position, convertView, parent);
 
         Cursor c = (Cursor) getItem(position);
+        int id_idx = c.getColumnIndex("_id");
+        int id = c.getInt(id_idx);
+
 
         int name_idx = c.getColumnIndex("name");
         String name = c.getString(name_idx);
-        TextView txt_name = (TextView)item.findViewById(R.id.txt_name);
+        ((TextView)item.findViewById(R.id.txt_type_name)).setText(name);
 
         int clr = 0;
         String color = c.getString(2);
@@ -70,9 +71,6 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
         item.findViewById(R.id.btn_type_edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id_idx = c.getColumnIndex("_id");
-                int id = c.getInt(id_idx);
-                Log.d("asdf", "ID Index: " + id_idx + " - ID: " + id);
                 openEditTypeActivity(id);
             }
         });

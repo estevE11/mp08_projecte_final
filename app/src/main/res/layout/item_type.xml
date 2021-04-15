@@ -7,12 +7,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/txt_name"
+        android:id="@+id/txt_type_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:text="texttt"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_type_color"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,9 +27,9 @@
         android:textColorHighlight="@color/color4"
         android:textColorLink="@color/color4"
         app:icon="@drawable/ic_baseline_delete_forever_24"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_name"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_type_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_name" />
+        app:layout_constraintTop_toTopOf="@+id/txt_type_name" />
 
     <Button
         android:id="@+id/btn_type_edit"
@@ -37,9 +38,9 @@
         android:layout_marginEnd="8dp"
         android:textColor="@color/black"
         app:icon="@drawable/ic_baseline_create_24"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_name"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_type_name"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete"
-        app:layout_constraintTop_toTopOf="@+id/txt_name" />
+        app:layout_constraintTop_toTopOf="@+id/txt_type_name" />
 
     <View
         android:id="@+id/view_type_color"

@@ -39,7 +39,7 @@ class ZonesItemListAdapter extends SimpleCursorAdapter {
     public ZonesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_zone, c,
                 new String[]{"name", "description"}, // from
-                new int[]{R.id.txt_name, R.id.txt_description},
+                new int[]{R.id.txt_type_name, R.id.txt_description},
                 1); // to
     }
 
@@ -50,7 +50,7 @@ class ZonesItemListAdapter extends SimpleCursorAdapter {
         Cursor c = (Cursor) getItem(position);
 
         String name = c.getString(0);
-        TextView txt_name = (TextView)item.findViewById(R.id.txt_name);
+        TextView txt_name = (TextView)item.findViewById(R.id.txt_type_name);
 
         String serial_number = c.getString(1);
         TextView txt_serial_number = (TextView)item.findViewById(R.id.txt_description);
