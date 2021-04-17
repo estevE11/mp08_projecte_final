@@ -99,10 +99,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCreateMachineActivity() {
         Intent intent = new Intent(getApplicationContext(), MachineManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", false);
+
+        intent.putExtras(b);
         startActivity(intent);
     }
     private void openCreateZoneActivity() {
         Intent intent = new Intent(getApplicationContext(), ZoneManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", false);
+
+        intent.putExtras(b);
         startActivity(intent);
     }
     private void openCreateTypeActivity() {
