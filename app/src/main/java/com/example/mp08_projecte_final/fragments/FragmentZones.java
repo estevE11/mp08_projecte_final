@@ -1,6 +1,7 @@
 package com.example.mp08_projecte_final.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mp08_projecte_final.R;
 import com.example.mp08_projecte_final.db.DBDatasource;
+import com.example.mp08_projecte_final.managers.TypeManager;
+import com.example.mp08_projecte_final.managers.ZoneManager;
 
 public class FragmentZones extends Fragment {
     private DBDatasource db;
@@ -35,13 +38,14 @@ public class FragmentZones extends Fragment {
 }
 
 class ZonesItemListAdapter extends SimpleCursorAdapter {
-    private Context conxtext;
+    private Context context;
 
     public ZonesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_zone, c,
                 new String[]{"name"}, // from
                 new int[]{R.id.txt_zone_name},
                 1); // to
+        this.context = context;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,12 +53,33 @@ class ZonesItemListAdapter extends SimpleCursorAdapter {
         View item = super.getView(position, convertView, parent);
 
         Cursor c = (Cursor) getItem(position);
+        int id_idx = c.getColumnIndex("_id");
+        int id = c.getInt(id_idx);
 
         String name = c.getString(1);
         Log.d("asdf", name);
         ((TextView)item.findViewById(R.id.txt_zone_name)).setText(name);
 
+        item.findViewById(R.id.btn_zone_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditZoneActivity(id);
+            }
+        });
+
         return(item);
+    }
+
+    private void openEditZoneActivity(int id) {
+        Intent intent = new Intent(context.getApplicationContext(), ZoneManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", true);
+        b.putInt("id", id);
+
+        intent.putExtras(b);
+
+        context.startActivities(new Intent[]{intent});
     }
 }
 

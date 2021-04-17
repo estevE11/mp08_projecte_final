@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 14;
+    private static final int database_VERSION = 17;
 
     // database name
     private static final String database_NAME = "buidem";

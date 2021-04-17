@@ -100,6 +100,11 @@ public class TypeManager extends AppCompatActivity {
 
     private void openMainActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Bundle b = new Bundle();
+
+        b.putInt("tab", 1);
+
+        intent.putExtras(b);
         startActivity(intent);
     }
 }

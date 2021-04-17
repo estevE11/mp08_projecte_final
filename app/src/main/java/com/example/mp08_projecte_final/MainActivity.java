@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DBDatasource db;
 
+    private int defaultTab = 0;
+
     private TabLayout tabLayout;
     private ViewPager2 pager;
     private FragmentsSlideAdapter pagerAdapter;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.db = new DBDatasource(this);
+
+        Bundle b = this.getIntent().getExtras();
 
         LinkedList<Fragment> fragments = new LinkedList<Fragment>();
         fragments.add(new FragmentMachines());
@@ -55,21 +60,29 @@ public class MainActivity extends AppCompatActivity {
         this.pagerAdapter = new FragmentsSlideAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
         this.pager.setAdapter(this.pagerAdapter);
 
+        try {
+            this.defaultTab = b.getInt("tab");
+            this.pager.setCurrentItem(this.defaultTab);
+        } catch (Exception e) {
+
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
+                Log.d("asdf", "Selected: " + tab.getPosition());
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                Log.d("asdf", "Unelected: " + tab.getPosition());
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                Log.d("asdf", "Reselected: " + tab.getPosition());
             }
         });
 
@@ -77,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 //super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                tabLayout.selectTab(tabLayout.getTabAt(position));
+                tabLayout.setScrollPosition(position, positionOffset, false);
+                //tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
 
