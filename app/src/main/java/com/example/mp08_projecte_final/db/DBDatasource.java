@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 public class DBDatasource {
     private DBHelper dbHelper;
     private SQLiteDatabase dbW, dbR;
@@ -54,6 +56,34 @@ public class DBDatasource {
 
     public Cursor getType(int id) {
         return dbR.rawQuery("select * from types where _id=" + (id), null);
+    }
+
+    public ArrayList<String> getTypeNames() {
+        Cursor c = dbR.rawQuery("select name from types", null);
+        c.moveToFirst();
+
+        ArrayList<String> res = new ArrayList<String>();
+
+        for(int i = 0; i < c.getCount(); i++) {
+            res.add(c.getString(0));
+            c.moveToNext();
+        }
+
+        return res;
+    }
+
+    public ArrayList<String> getZoneNames() {
+        Cursor c = dbR.rawQuery("select name from zones", null);
+        c.moveToFirst();
+
+        ArrayList<String> res = new ArrayList<String>();
+
+        for(int i = 0; i < c.getCount(); i++) {
+            res.add(c.getString(0));
+            c.moveToNext();
+        }
+
+        return res;
     }
 
     // Create

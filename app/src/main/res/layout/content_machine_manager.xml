@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinner_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -116,7 +116,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/input_name" />
+        app:layout_constraintTop_toBottomOf="@+id/input_machine_name" />
 
     <TextView
         android:id="@+id/label_serial_number"
@@ -131,11 +131,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name*"
-        app:layout_constraintBottom_toTopOf="@+id/input_name"
-        app:layout_constraintStart_toStartOf="@+id/input_name" />
+        app:layout_constraintBottom_toTopOf="@+id/input_machine_name"
+        app:layout_constraintStart_toStartOf="@+id/input_machine_name" />
 
     <EditText
-        android:id="@+id/input_name"
+        android:id="@+id/input_machine_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -206,12 +206,12 @@
         app:layout_constraintStart_toStartOf="@+id/guideline4" />
 
     <TextView
-        android:id="@+id/spinner_type"
+        android:id="@+id/label_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Type"
-        app:layout_constraintBottom_toTopOf="@+id/spinner2"
-        app:layout_constraintStart_toStartOf="@+id/spinner2" />
+        app:layout_constraintBottom_toTopOf="@+id/spinner_type"
+        app:layout_constraintStart_toStartOf="@+id/spinner_type" />
 
     <EditText
         android:id="@+id/input_date"
@@ -243,13 +243,13 @@
         app:layout_constraintTop_toBottomOf="@+id/input_email" />
 
     <Button
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_machine_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="SAVE"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_type" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
