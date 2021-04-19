@@ -1,6 +1,7 @@
 package com.example.mp08_projecte_final.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mp08_projecte_final.R;
 import com.example.mp08_projecte_final.db.DBDatasource;
+import com.example.mp08_projecte_final.managers.MachineManager;
+import com.example.mp08_projecte_final.managers.TypeManager;
 
 public class FragmentMachines extends Fragment {
 
@@ -35,13 +38,14 @@ public class FragmentMachines extends Fragment {
 }
 
 class MachinesItemListAdapter extends SimpleCursorAdapter {
-    private Context conxtext;
+    private Context context;
 
     public MachinesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_machine, c,
                 new String[]{"name", "serial_number"}, // from
                 new int[]{R.id.txt_type_name, R.id.txt_description},
                 1); // to
+        this.context = context;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,6 +53,8 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         View item = super.getView(position, convertView, parent);
 
         Cursor c = (Cursor) getItem(position);
+        int id_idx = c.getColumnIndex("_id");
+        int id = c.getInt(id_idx);
 
         String name = c.getString(0);
         TextView txt_name = (TextView)item.findViewById(R.id.txt_type_name);
@@ -56,6 +62,25 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         String serial_number = c.getString(1);
         TextView txt_serial_number = (TextView)item.findViewById(R.id.txt_description);
 
+        item.findViewById(R.id.btn_machine_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditMachineActivity(id);
+            }
+        });
+
         return(item);
+    }
+
+    private void openEditMachineActivity(int id) {
+        Intent intent = new Intent(context.getApplicationContext(), MachineManager.class);
+        Bundle b = new Bundle();
+
+        b.putBoolean("editMode", true);
+        b.putInt("id", id);
+
+        intent.putExtras(b);
+
+        context.startActivities(new Intent[]{intent});
     }
 }

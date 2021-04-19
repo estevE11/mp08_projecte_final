@@ -122,7 +122,7 @@
         android:id="@+id/label_serial_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Serial Number"
+        android:text="Serial Number*"
         app:layout_constraintBottom_toTopOf="@+id/input_serial_number"
         app:layout_constraintStart_toStartOf="@+id/input_serial_number" />
 
