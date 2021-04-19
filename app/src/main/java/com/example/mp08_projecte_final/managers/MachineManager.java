@@ -175,7 +175,7 @@ public class MachineManager extends AppCompatActivity {
         values.put("id_type", id_type);
 
         if(!this.editMode) this.db.insertMachine(values);
-        else this.db.updateMachine(this.machineIdus, values);
+        else this.db.updateMachine(this.machineId, values);
         this.openMainActivity();
     }
 
