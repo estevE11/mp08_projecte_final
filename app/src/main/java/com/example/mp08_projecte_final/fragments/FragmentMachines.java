@@ -1,8 +1,11 @@
 package com.example.mp08_projecte_final.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mp08_projecte_final.R;
@@ -42,7 +46,7 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
 
     public MachinesItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.item_machine, c,
-                new String[]{"name", "serial_number"}, // from
+                new String[]{"name", "serial_number", "telf"}, // from
                 new int[]{R.id.txt_type_name, R.id.txt_description},
                 1); // to
         this.context = context;
@@ -61,6 +65,8 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
 
         String serial_number = c.getString(1);
         TextView txt_serial_number = (TextView)item.findViewById(R.id.txt_description);
+
+        int telf = c.getInt(2);
 
         item.findViewById(R.id.btn_machine_edit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +87,17 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
 
         intent.putExtras(b);
 
-        context.startActivities(new Intent[]{intent});
+        context.startActivity(intent);
+    }
+
+    private void phoneCall(int num) {
+        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        phoneIntent.setData(Uri.parse("tel:" + num));
+
+        if (ActivityCompat.checkSelfPermission(this.context,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        context.startActivity(phoneIntent);
     }
 }

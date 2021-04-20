@@ -152,12 +152,13 @@ public class MachineManager extends AppCompatActivity {
             insert = false;
         }
 
-        //TODO: Check if email is correct
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         if(!email.matches(regex)) {
             input_email.setError("Email not valid");
             insert = false;
         }
+
+        //TODO: Check telf is correct
 
         if(!insert) return;
         ContentValues values = new ContentValues();
