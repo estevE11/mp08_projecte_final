@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,19 @@ public class DBDatasource {
 
     public Cursor getMachine(int id) {
         return dbR.rawQuery("select * from machines where _id=" + (id), null);
+    }
+
+    public boolean serialNumberExists(String serialNumber) {
+        Cursor c = this.getMachines();
+        c.moveToFirst();
+
+        for(int i = 0; i < c.getCount(); i++) {
+            String other_serial = c.getString(c.getColumnIndexOrThrow("serial_number"));
+            Log.d("asdf", serialNumber + " = " + other_serial);
+            if(serialNumber.equals(other_serial)) return true;
+            c.moveToNext();
+        }
+        return false;
     }
 
     public Cursor getZones() {
@@ -129,8 +143,9 @@ public class DBDatasource {
     }
 
     public boolean deleteType(int id) {
-        Cursor c = dbR.rawQuery("select name from machines where id_type=" + id, null);
+        Cursor c = dbR.rawQuery("select * from machines where id_type=" + id, null);
         c.moveToFirst();
+        Log.d("asdf", id + ": " + c.getCount());
         if(c.getCount() > 0) return false;
         dbW.delete("types", "_id=?", new String[] { String.valueOf(id) });
         return true;

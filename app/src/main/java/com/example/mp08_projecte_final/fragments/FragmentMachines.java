@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,31 +32,45 @@ public class FragmentMachines extends Fragment {
 
     private DBDatasource db;
 
+    MachinesItemListAdapter listAdapter;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.frag_machines, container, false);
 
         this.db = new DBDatasource(getContext());
 
         Cursor c = this.db.getMachines();
-        ListAdapter listAdapter = new MachinesItemListAdapter(getContext(), c);
+        this.listAdapter = new MachinesItemListAdapter(getContext(), c, this);
         ListView lst = (ListView) view.findViewById(R.id.listView);
-        lst.setAdapter(listAdapter);
+        lst.setAdapter(this.listAdapter);
+
+        this.load();
 
         return view;
+    }
+
+    public void load() {
+        Cursor c = this.db.getMachines();
+        Bundle b = new Bundle();
+
+        this.listAdapter.changeCursor(c);
+        this.listAdapter.notifyDataSetChanged();
     }
 }
 
 class MachinesItemListAdapter extends SimpleCursorAdapter {
     private Context context;
+    private FragmentMachines frag;
     private DBDatasource db;
 
-    public MachinesItemListAdapter(Context context, Cursor c) {
+    public MachinesItemListAdapter(Context context, Cursor c, FragmentMachines frag) {
         super(context, R.layout.item_machine, c,
                 new String[]{"name", "serial_number", "telf"}, // from
                 new int[]{R.id.txt_type_name, R.id.txt_description},
                 1); // to
         this.context = context;
         this.db = new DBDatasource(this.context);
+        this.frag = frag;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -78,6 +93,13 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
             @Override
             public void onClick(View v) {
                 openEditMachineActivity(id);
+            }
+        });
+
+        item.findViewById(R.id.btn_machine_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDeleteAlert(id);
             }
         });
 
@@ -108,6 +130,7 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
     }
 
     private void openDeleteAlert(int id) {
+        Log.d("asdf", "Buenas");
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -115,6 +138,7 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         db.deleteMachine(id);
+                        frag.load();
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -127,4 +151,5 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setMessage("The selected item will be selected").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
-    }}
+    }
+}

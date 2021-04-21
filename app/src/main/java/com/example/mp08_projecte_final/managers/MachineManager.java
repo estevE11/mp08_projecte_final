@@ -158,6 +158,11 @@ public class MachineManager extends AppCompatActivity {
             insert = false;
         }
 
+        if(this.db.serialNumberExists(serial)) {
+            input_serial.setError("Serial number already exists!");
+            insert = false;
+        }
+
         //TODO: Check telf is correct
 
         if(!insert) return;
