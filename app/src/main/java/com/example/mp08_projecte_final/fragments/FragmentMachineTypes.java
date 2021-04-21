@@ -73,6 +73,13 @@ class TypesItemListAdapter extends SimpleCursorAdapter {
             }
         });
 
+        item.findViewById(R.id.btn_type_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditTypeActivity(id);
+            }
+        });
+
         return(item);
     }
 

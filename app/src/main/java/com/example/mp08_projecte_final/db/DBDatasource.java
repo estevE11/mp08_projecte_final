@@ -120,11 +120,19 @@ public class DBDatasource {
         dbW.delete("machines", "_id=?", new String[] { String.valueOf(id) });
     }
 
-    public void deleteZones(int id) {
+    public boolean deleteZone(int id) {
+        Cursor c = dbR.rawQuery("select name from machines where id_zone=" + id, null);
+        c.moveToFirst();
+        if(c.getCount() > 0) return false;
         dbW.delete("zones", "_id=?", new String[] { String.valueOf(id) });
+        return true;
     }
 
-    public void deleteTypes(int id) {
+    public boolean deleteType(int id) {
+        Cursor c = dbR.rawQuery("select name from machines where id_type=" + id, null);
+        c.moveToFirst();
+        if(c.getCount() > 0) return false;
         dbW.delete("types", "_id=?", new String[] { String.valueOf(id) });
+        return true;
     }
 }
