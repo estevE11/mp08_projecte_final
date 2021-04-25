@@ -68,7 +68,7 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
 
     public MachinesItemListAdapter(Context context, Cursor c, FragmentMachines frag) {
         super(context, R.layout.item_machine, c,
-                new String[]{"name", "serial_number", "telf"}, // from
+                new String[]{"name", "serial_number", "telf", "email"}, // from
                 new int[]{R.id.txt_type_name, R.id.txt_description},
                 1); // to
         this.context = context;
@@ -84,13 +84,9 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         int id_idx = c.getColumnIndex("_id");
         int id = c.getInt(id_idx);
 
-        String name = c.getString(0);
-        TextView txt_name = (TextView)item.findViewById(R.id.txt_type_name);
-
-        String serial_number = c.getString(1);
-        TextView txt_serial_number = (TextView)item.findViewById(R.id.txt_description);
-
-        int telf = c.getInt(2);
+        String serial_number = c.getString(c.getColumnIndex("serial_number"));
+        String telf = c.getString(c.getColumnIndex("telf"));
+        String email = c.getString(c.getColumnIndex("email"));
 
         item.findViewById(R.id.btn_machine_edit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +105,14 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         item.findViewById(R.id.btn_machine_phone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                phoneCall(telf);
+                phoneCall(Integer.parseInt(telf));
+            }
+        });
+
+        item.findViewById(R.id.btn_machine_mail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMail(email, serial_number);
             }
         });
 
@@ -147,8 +150,17 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         }
     }
 
+    private void sendMail(String mail, String serial) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Provera revisió màquina nº" + serial);
+        intent.putExtra(Intent.EXTRA_TEXT, "Enviat desde l'app de Buidem");
+        intent.setType("message/rfc822");
+        context.startActivity(Intent.createChooser(intent, "Send Email"));
+    }
+
     private void openDeleteAlert(int id) {
-        Log.d("asdf", "Buenas");
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
