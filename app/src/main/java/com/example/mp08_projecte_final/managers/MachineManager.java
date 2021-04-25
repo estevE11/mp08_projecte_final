@@ -4,22 +4,26 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.mp08_projecte_final.MainActivity;
 import com.example.mp08_projecte_final.db.DBDatasource;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.mp08_projecte_final.R;
+import com.example.mp08_projecte_final.utils.CalendarUtils;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -55,11 +59,22 @@ public class MachineManager extends AppCompatActivity {
                 submit();
             }
         });
+
+        findViewById(R.id.input_date).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                final EditText dateInput = findViewById(R.id.input_date);
+                CalendarUtils.openDateInput(MachineManager.this, dateInput);
+            }
+        });
     }
 
     public void loadSpinners() {
         Cursor type_names = this.db.getTypeNames();
         Cursor zone_names = this.db.getZoneNames();
+        type_names.moveToFirst();
+        zone_names.moveToFirst();
 
         String[] queryCols=new String[]{"_id", "name"};
         String[] adapterCols=new String[]{"name"};
@@ -101,8 +116,33 @@ public class MachineManager extends AppCompatActivity {
         input_client.setText(c.getString(c.getColumnIndex("client_name")));
         input_email.setText(c.getString(c.getColumnIndex("email")));
         input_last_check.setText(c.getString(c.getColumnIndex("last_check")));
-        sp_types.setSelection(c.getInt(c.getColumnIndex("id_type")));
-        sp_zones.setSelection(c.getInt(c.getColumnIndex("id_zone")));
+
+
+        // Set spinners
+        /*
+        Cursor type = (Cursor)sp_types.getSelectedItem();
+        Cursor zone = (Cursor)sp_zones.getSelectedItem();
+        int id_type = type.getInt(type.getColumnIndex("_id"));
+        int id_zone = zone.getInt(type.getColumnIndex("_id"));
+        */
+
+        int id_type = c.getInt(c.getColumnIndex("id_type"));
+        int id_zone = c.getInt(c.getColumnIndex("id_zone"));
+
+
+        for(int i = 0; i < sp_types.getAdapter().getCount(); i++) {
+            int curr_id = ((Cursor)sp_types.getItemAtPosition(i)).getInt(0);
+            if(curr_id == id_type) {
+                sp_types.setSelection(i);
+            }
+        }
+
+        for(int i = 0; i < sp_zones.getAdapter().getCount(); i++) {
+            int curr_id = ((Cursor)sp_zones.getItemAtPosition(i)).getInt(0);
+            if(curr_id == id_type) {
+                sp_zones.setSelection(i);
+            }
+        }
     }
 
     public void submit() {
