@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_machine_delete" />
 
     <Button
-        android:id="@+id/btn_machine_phone2"
+        android:id="@+id/btn_machine_mail"
         android:layout_width="55dp"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_baseline_email_24"

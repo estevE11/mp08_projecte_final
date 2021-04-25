@@ -119,13 +119,6 @@ public class MachineManager extends AppCompatActivity {
 
 
         // Set spinners
-        /*
-        Cursor type = (Cursor)sp_types.getSelectedItem();
-        Cursor zone = (Cursor)sp_zones.getSelectedItem();
-        int id_type = type.getInt(type.getColumnIndex("_id"));
-        int id_zone = zone.getInt(type.getColumnIndex("_id"));
-        */
-
         int id_type = c.getInt(c.getColumnIndex("id_type"));
         int id_zone = c.getInt(c.getColumnIndex("id_zone"));
 
@@ -139,7 +132,7 @@ public class MachineManager extends AppCompatActivity {
 
         for(int i = 0; i < sp_zones.getAdapter().getCount(); i++) {
             int curr_id = ((Cursor)sp_zones.getItemAtPosition(i)).getInt(0);
-            if(curr_id == id_type) {
+            if(curr_id == id_zone) {
                 sp_zones.setSelection(i);
             }
         }

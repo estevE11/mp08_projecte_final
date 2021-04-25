@@ -1,6 +1,7 @@
 package com.example.mp08_projecte_final.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,8 +22,10 @@ import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.mp08_projecte_final.MainActivity;
 import com.example.mp08_projecte_final.R;
 import com.example.mp08_projecte_final.db.DBDatasource;
 import com.example.mp08_projecte_final.managers.MachineManager;
@@ -103,6 +106,13 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
             }
         });
 
+        item.findViewById(R.id.btn_machine_phone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                phoneCall(telf);
+            }
+        });
+
         return(item);
     }
 
@@ -122,11 +132,19 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         Intent phoneIntent = new Intent(Intent.ACTION_CALL);
         phoneIntent.setData(Uri.parse("tel:" + num));
 
-        if (ActivityCompat.checkSelfPermission(this.context,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            }
+            else
+            {
+                context.startActivity(phoneIntent);
+            }
         }
-        context.startActivity(phoneIntent);
+        else
+        {
+            context.startActivity(phoneIntent);
+        }
     }
 
     private void openDeleteAlert(int id) {
