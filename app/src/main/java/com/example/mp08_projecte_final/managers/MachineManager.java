@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -56,11 +58,16 @@ public class MachineManager extends AppCompatActivity {
     }
 
     public void loadSpinners() {
-        ArrayList<String> type_names = this.db.getTypeNames();
-        ArrayList<String> zone_names = this.db.getZoneNames();
+        Cursor type_names = this.db.getTypeNames();
+        Cursor zone_names = this.db.getZoneNames();
 
-        ArrayAdapter<String> typeArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type_names);
-        ArrayAdapter<String> zoneArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, zone_names);
+        String[] queryCols=new String[]{"_id", "name"};
+        String[] adapterCols=new String[]{"name"};
+        int[] adapterRowViews = new int[]{android.R.id.text1};
+
+        CursorAdapter typeArrayAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, type_names, adapterCols, adapterRowViews,0);
+        CursorAdapter zoneArrayAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, zone_names, adapterCols, adapterRowViews,0);
+
 
         @SuppressLint("WrongViewCast") Spinner sp_types = (Spinner)findViewById(R.id.spinner_type);
         @SuppressLint("WrongViewCast") Spinner sp_zones = (Spinner)findViewById(R.id.spinner_zone);
@@ -122,8 +129,10 @@ public class MachineManager extends AppCompatActivity {
         String client = input_client.getText().toString();
         String email = input_email.getText().toString();
         String last_check = input_last_check.getText().toString();
-        int id_type = sp_types.getSelectedItemPosition();
-        int id_zone = sp_zones.getSelectedItemPosition();
+        Cursor type = (Cursor)sp_types.getSelectedItem();
+        Cursor zone = (Cursor)sp_zones.getSelectedItem();
+        int id_type = type.getInt(type.getColumnIndex("_id"));
+        int id_zone = zone.getInt(type.getColumnIndex("_id"));
 
         String err_required = "This field is required";
 

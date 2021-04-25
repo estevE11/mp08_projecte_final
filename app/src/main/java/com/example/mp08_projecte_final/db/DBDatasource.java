@@ -72,32 +72,16 @@ public class DBDatasource {
         return dbR.rawQuery("select * from types where _id=" + (id), null);
     }
 
-    public ArrayList<String> getTypeNames() {
-        Cursor c = dbR.rawQuery("select name from types", null);
+    public Cursor getTypeNames() {
+        Cursor c = dbR.rawQuery("select _id, name from types", null);
         c.moveToFirst();
-
-        ArrayList<String> res = new ArrayList<String>();
-
-        for(int i = 0; i < c.getCount(); i++) {
-            res.add(c.getString(0));
-            c.moveToNext();
-        }
-
-        return res;
+        return c;
     }
 
-    public ArrayList<String> getZoneNames() {
-        Cursor c = dbR.rawQuery("select name from zones", null);
+    public Cursor getZoneNames() {
+        Cursor c = dbR.rawQuery("select _id, name from zones", null);
         c.moveToFirst();
-
-        ArrayList<String> res = new ArrayList<String>();
-
-        for(int i = 0; i < c.getCount(); i++) {
-            res.add(c.getString(0));
-            c.moveToNext();
-        }
-
-        return res;
+        return c;
     }
 
     // Create
