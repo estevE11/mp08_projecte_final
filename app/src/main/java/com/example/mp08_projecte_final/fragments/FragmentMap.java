@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,9 @@ public class FragmentMap extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = (ViewGroup) inflater.inflate(R.layout.frag_map, container, false);
-
         this.db = new DBDatasource(getContext());
+
+        Bundle bundle = this.getArguments();
 
         SupportMapFragment smf = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
 
@@ -44,21 +46,50 @@ public class FragmentMap extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
-                load();
+                loader(bundle);
             }
         });
         
         return view;
     }
 
-    public void load() {
-        Cursor machines = this.db.getMachines();
-        machines.moveToFirst();
+    public void loader(Bundle bundle) {
+        boolean zone = bundle.getBoolean("zone");
+        boolean machine = bundle.getBoolean("machine");
+        Log.d("asdf", zone + ", " + machine);
+        if(zone) {
+            int id = bundle.getInt("zone_id");
+            loadZone(id);
+        } else if(machine) {
+            int id = bundle.getInt("machine_id");
+            loadFocus(id);
+        } else {
+            loadFocus(null);
+        }
+    }
 
+    public void loadFocus(Integer id) {
+        Cursor machines = this.db.getMachines();
+        this.load(id, machines);
+    }
+
+    public void loadZone(int zone_id) {
+        Cursor machines = this.db.getMachinesByZone(zone_id);
+        this.load(null, machines);
+    }
+
+    public void load(Integer id, Cursor machines) {
+        boolean focus = id != null;
+        int focus_id = 0;
+        if(focus) focus_id = id;
+
+        Log.d("asdf", "id: " + focus_id);
+        machines.moveToFirst();
 
         LatLngBounds.Builder bld = new LatLngBounds.Builder();
 
         for(int i = 0; i < machines.getCount(); i++) {
+            int current_id = machines.getInt(machines.getColumnIndex("_id"));
 
             String address = machines.getString(machines.getColumnIndex("address"));
             String city = machines.getString(machines.getColumnIndex("city"));
@@ -73,12 +104,18 @@ public class FragmentMap extends Fragment {
 
 
             this.map.addMarker(new MarkerOptions().position(pos).title(serial).icon(this.getMarkerIcon(color)));
-            bld.include(pos);
+            if(!focus) {
+                bld.include(pos);
+            } else {
+                if(focus_id == current_id) {
+                    bld.include(pos);
+                }
+            }
 
             machines.moveToNext();
         }
         LatLngBounds bounds = bld.build();
-        this.map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 250));
+        this.map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, focus ? 500 : 250));
     }
 
     public LatLng getLocationFromAddress(String strAddress) {

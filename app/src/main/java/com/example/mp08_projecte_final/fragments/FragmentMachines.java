@@ -34,6 +34,7 @@ import com.example.mp08_projecte_final.managers.TypeManager;
 public class FragmentMachines extends Fragment {
 
     private DBDatasource db;
+    private MainActivity mainActivity;
 
     MachinesItemListAdapter listAdapter;
 
@@ -43,13 +44,18 @@ public class FragmentMachines extends Fragment {
         this.db = new DBDatasource(getContext());
 
         Cursor c = this.db.getMachines();
-        this.listAdapter = new MachinesItemListAdapter(getContext(), c, this);
+        this.listAdapter = new MachinesItemListAdapter(getContext(), c, this, this.mainActivity);
         ListView lst = (ListView) view.findViewById(R.id.listView);
         lst.setAdapter(this.listAdapter);
 
         this.load();
 
         return view;
+    }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mainActivity = (MainActivity) activity;
     }
 
     public void load() {
@@ -65,8 +71,9 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
     private Context context;
     private FragmentMachines frag;
     private DBDatasource db;
+    private MainActivity mainActivity;
 
-    public MachinesItemListAdapter(Context context, Cursor c, FragmentMachines frag) {
+    public MachinesItemListAdapter(Context context, Cursor c, FragmentMachines frag, MainActivity mainActivity) {
         super(context, R.layout.item_machine, c,
                 new String[]{"name", "serial_number", "telf", "email"}, // from
                 new int[]{R.id.txt_type_name, R.id.txt_description},
@@ -74,6 +81,7 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         this.context = context;
         this.db = new DBDatasource(this.context);
         this.frag = frag;
+        this.mainActivity = mainActivity;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -113,6 +121,13 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
             @Override
             public void onClick(View v) {
                 sendMail(email, serial_number);
+            }
+        });
+
+        item.findViewById(R.id.btn_machine_map).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.openMapWithFocus(id);
             }
         });
 

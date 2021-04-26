@@ -65,4 +65,12 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_machine_edit"
         app:layout_constraintTop_toBottomOf="@+id/btn_machine_edit" />
 
+    <Button
+        android:id="@+id/btn_machine_map"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_baseline_pin_drop_24"
+        app:layout_constraintEnd_toEndOf="@+id/btn_machine_edit"
+        app:layout_constraintTop_toBottomOf="@+id/btn_machine_mail" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

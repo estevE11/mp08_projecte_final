@@ -2,6 +2,7 @@ package com.example.mp08_projecte_final;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 pager;
     private FragmentsSlideAdapter pagerAdapter;
 
+    LinkedList<Fragment> fragments;
+    FragmentMachines frag_machines;
+    FragmentMachineTypes frag_types;
+    FragmentZones frag_zones;
+    FragmentMap frag_map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +55,23 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle b = this.getIntent().getExtras();
 
-        LinkedList<Fragment> fragments = new LinkedList<Fragment>();
-        fragments.add(new FragmentMachines());
-        fragments.add(new FragmentMachineTypes());
-        fragments.add(new FragmentZones());
-        fragments.add(new FragmentMap());
+        this.fragments = new LinkedList<Fragment>();
+
+        this.frag_machines = new FragmentMachines();
+        this.frag_types = new FragmentMachineTypes();
+        this.frag_zones = new FragmentZones();
+        this.frag_map = new FragmentMap();
+
+        fragments.add(this.frag_machines);
+        fragments.add(this.frag_types);
+        fragments.add(this.frag_zones);
+        fragments.add(this.frag_map);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("machine", false);
+        bundle.putBoolean("zone", false);
+
+        this.frag_map.setArguments(bundle);
 
         this.tabLayout = findViewById(R.id.tabLayout);
         this.pager = findViewById(R.id.pager);
@@ -77,12 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.d("asdf", "Unelected: " + tab.getPosition());
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.d("asdf", "Reselected: " + tab.getPosition());
             }
         });
 
@@ -95,6 +112,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void openMapByZone(int zone_id) {
+        this.refreshFragmentMap();
+        Bundle bundle = new Bundle();
+        bundle.putInt("zone_id", zone_id);
+        bundle.putBoolean("machine", false);
+        bundle.putBoolean("zone", true);
+        this.frag_map.setArguments(bundle);
+        this.pager.setCurrentItem(3);
+    }
+
+    public void openMapWithFocus(int machine_id) {
+        this.refreshFragmentMap();
+        Bundle bundle = new Bundle();
+        bundle.putInt("machine_id", machine_id);
+        bundle.putBoolean("zone", false);
+        bundle.putBoolean("machine", true);
+        this.frag_map.setArguments(bundle);
+        this.pager.setCurrentItem(3);
+    }
+
+    private void refreshFragmentMap() {
+        this.frag_map = new FragmentMap();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("zone", false);
+        bundle.putBoolean("machine", false);
+        this.frag_map.setArguments(bundle);
+        this.fragments.set(3, this.frag_map);
+
+        this.pagerAdapter = new FragmentsSlideAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
+        this.pager.setAdapter(this.pagerAdapter);
     }
 
     private void openCreateMachineActivity() {

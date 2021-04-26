@@ -38,4 +38,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/txt_zone_name"
         app:layout_constraintEnd_toStartOf="@+id/btn_zone_delete"
         app:layout_constraintTop_toTopOf="@+id/txt_zone_name" />
+
+    <Button
+        android:id="@+id/btn_zone_map"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:text="X"
+        app:icon="@drawable/ic_baseline_pin_drop_24"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_zone_name"
+        app:layout_constraintEnd_toStartOf="@+id/btn_zone_edit"
+        app:layout_constraintTop_toTopOf="@+id/txt_zone_name"
+        app:layout_constraintVertical_bias="0.482" />
 </androidx.constraintlayout.widget.ConstraintLayout>
