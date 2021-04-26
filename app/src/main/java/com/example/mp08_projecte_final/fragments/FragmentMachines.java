@@ -92,6 +92,14 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         int id_idx = c.getColumnIndex("_id");
         int id = c.getInt(id_idx);
 
+        int type_id_idx = c.getColumnIndex("id_type");
+        int type_id = c.getInt(type_id_idx);
+
+        Cursor type = this.db.getType(type_id);
+        type.moveToFirst();
+        int color = type.getInt(type.getColumnIndex("color"));
+        item.findViewById(R.id.rect_type_color).setBackgroundColor(color);
+
         String serial_number = c.getString(c.getColumnIndex("serial_number"));
         String telf = c.getString(c.getColumnIndex("telf"));
         String email = c.getString(c.getColumnIndex("email"));
