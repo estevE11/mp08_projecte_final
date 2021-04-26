@@ -39,6 +39,10 @@ public class DBDatasource {
         return dbR.rawQuery("select * from machines", null);
     }
 
+    public Cursor getMachinesByZone(int id) {
+        return dbR.rawQuery("select * from machines where id_zone=" + id, null);
+    }
+
     public Cursor getMachine(int id) {
         return dbR.rawQuery("select * from machines where _id=" + (id), null);
     }
