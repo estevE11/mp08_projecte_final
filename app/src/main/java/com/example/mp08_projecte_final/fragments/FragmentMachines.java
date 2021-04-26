@@ -40,8 +40,12 @@ public class FragmentMachines extends Fragment {
 
     MachinesItemListAdapter listAdapter;
 
+    String[] orderItems = {"Client","City","Address","Last check"};
+
     TextView txt_search;
+    TextView txt_filter;
     private String searchFilter = "";
+    private Integer orderFilter = null;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.frag_machines, container, false);
@@ -54,11 +58,19 @@ public class FragmentMachines extends Fragment {
         lst.setAdapter(this.listAdapter);
 
         this.txt_search = (TextView)view.findViewById(R.id.text_search);
+        this.txt_filter = (TextView)view.findViewById(R.id.text_filter);
 
         view.findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialogSearch();
+            }
+        });
+
+        view.findViewById(R.id.btn_filter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogOrder();
             }
         });
 
@@ -78,7 +90,13 @@ public class FragmentMachines extends Fragment {
         } else {
             this.txt_search.setText("Searching \"" + this.searchFilter + "\" serial number");
         }
-        Cursor c = this.db.getFilteredMachines(this.searchFilter, null, "asc");
+
+        if(this.orderFilter == null) {
+            this.txt_filter.setText("No filter");
+        } else {
+            this.txt_filter.setText("Ordering by " + this.orderItems[this.orderFilter]);
+        }
+        Cursor c = this.db.getFilteredMachines(this.searchFilter, this.orderFilter, "asc");
 
         this.listAdapter.changeCursor(c);
         this.listAdapter.notifyDataSetChanged();
@@ -117,6 +135,39 @@ public class FragmentMachines extends Fragment {
             }
         });
         ad.show();
+    }
+
+    private void openDialogOrder() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("AlertDialog");
+        int checkedItem = 1;
+        alertDialog.setSingleChoiceItems(this.orderItems, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                orderFilter = which;
+            }
+        });
+        alertDialog.setPositiveButton("Set filter", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String val = "";
+                try {
+                    load();
+                } catch (Exception e) {
+                }
+
+            }
+        });
+
+        alertDialog.setNegativeButton("Remove filter", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                orderFilter = null;
+                load();
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 }
 
