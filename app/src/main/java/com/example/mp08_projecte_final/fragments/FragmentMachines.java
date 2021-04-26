@@ -33,6 +33,8 @@ import com.example.mp08_projecte_final.db.DBDatasource;
 import com.example.mp08_projecte_final.managers.MachineManager;
 import com.example.mp08_projecte_final.managers.TypeManager;
 
+import org.w3c.dom.Text;
+
 public class FragmentMachines extends Fragment {
 
     private DBDatasource db;
@@ -92,7 +94,7 @@ public class FragmentMachines extends Fragment {
         }
 
         if(this.orderFilter == null) {
-            this.txt_filter.setText("No filter");
+            this.txt_filter.setText("Not ordered");
         } else {
             this.txt_filter.setText("Ordering by " + this.orderItems[this.orderFilter]);
         }
@@ -179,8 +181,8 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
 
     public MachinesItemListAdapter(Context context, Cursor c, FragmentMachines frag, MainActivity mainActivity) {
         super(context, R.layout.item_machine, c,
-                new String[]{"name", "serial_number", "telf", "email"}, // from
-                new int[]{R.id.txt_type_name, R.id.txt_description},
+                new String[]{"name", "serial_number", "client_name", "last_check", "telf", "email"}, // from
+                new int[]{R.id.txt_type_name, R.id.txt_description, R.id.txt_client, R.id.txt_date},
                 1); // to
         this.context = context;
         this.db = new DBDatasource(this.context);
@@ -203,6 +205,14 @@ class MachinesItemListAdapter extends SimpleCursorAdapter {
         type.moveToFirst();
         int color = type.getInt(type.getColumnIndex("color"));
         item.findViewById(R.id.rect_type_color).setBackgroundColor(color);
+
+        int zone_id_idx = c.getColumnIndex("id_zone");
+        int zone_id = c.getInt(zone_id_idx);
+
+        Cursor zone = this.db.getZone(zone_id);
+        zone.moveToFirst();
+        String zone_name = zone.getString(zone.getColumnIndex("name"));
+        ((TextView)item.findViewById(R.id.txt_zone)).setText(zone_name);
 
         String serial_number = c.getString(c.getColumnIndex("serial_number"));
         String telf = c.getString(c.getColumnIndex("telf"));
