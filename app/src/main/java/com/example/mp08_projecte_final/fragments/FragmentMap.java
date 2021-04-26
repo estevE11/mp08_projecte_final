@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -54,10 +55,14 @@ public class FragmentMap extends Fragment {
         Cursor machines = this.db.getMachines();
         machines.moveToFirst();
 
+
+        LatLngBounds.Builder bld = new LatLngBounds.Builder();
+
         for(int i = 0; i < machines.getCount(); i++) {
 
             String address = machines.getString(machines.getColumnIndex("address"));
-            LatLng pos = this.getLocationFromAddress(address);
+            String city = machines.getString(machines.getColumnIndex("city"));
+            LatLng pos = this.getLocationFromAddress(address + ", " + city);
 
             String serial = machines.getString(machines.getColumnIndex("serial_number"));
 
@@ -68,11 +73,12 @@ public class FragmentMap extends Fragment {
 
 
             this.map.addMarker(new MarkerOptions().position(pos).title(serial).icon(this.getMarkerIcon(color)));
-            this.map.moveCamera(CameraUpdateFactory.newLatLng(pos));
+            bld.include(pos);
 
             machines.moveToNext();
         }
-
+        LatLngBounds bounds = bld.build();
+        this.map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 250));
     }
 
     public LatLng getLocationFromAddress(String strAddress) {
