@@ -39,6 +39,36 @@ public class DBDatasource {
         return dbR.rawQuery("select * from machines", null);
     }
 
+    public Cursor getFilteredMachines(String serial_number, Integer others, String ord) {
+        String where = "";
+        if(!serial_number.isEmpty()) {
+            where = " where serial_number like '%" + serial_number + "%'";
+        }
+
+        String orderBy = "";
+        if(others != null) {
+            orderBy = "order by ";
+            switch(others) {
+                case 0:
+                    orderBy += "client_name";
+                    break;
+                case 1:
+                    orderBy += "city";
+                    break;
+                case 2:
+                    orderBy += "address";
+                    break;
+                case 3:
+                    orderBy += "last_check";
+                    break;
+            }
+            orderBy += " " + ord;
+        }
+        String query = "select * from machines" + where + " " + orderBy;
+        Log.d("asdf", query);
+        return dbR.rawQuery(query, null);
+    }
+
     public Cursor getMachinesByZone(int id) {
         return dbR.rawQuery("select * from machines where id_zone=" + id, null);
     }

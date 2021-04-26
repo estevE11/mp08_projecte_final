@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="No search"
         app:layout_constraintBottom_toBottomOf="@+id/btn_search"
         app:layout_constraintStart_toEndOf="@+id/btn_search"
         app:layout_constraintTop_toTopOf="@+id/btn_search" />
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text="No filter"
         app:layout_constraintBottom_toBottomOf="@+id/btn_filter"
         app:layout_constraintStart_toEndOf="@+id/btn_filter"
         app:layout_constraintTop_toTopOf="@+id/btn_filter" />

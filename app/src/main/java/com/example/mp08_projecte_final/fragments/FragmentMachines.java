@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.annotation.RequiresApi;
@@ -38,6 +40,9 @@ public class FragmentMachines extends Fragment {
 
     MachinesItemListAdapter listAdapter;
 
+    TextView txt_search;
+    private String searchFilter = "";
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.frag_machines, container, false);
 
@@ -47,6 +52,15 @@ public class FragmentMachines extends Fragment {
         this.listAdapter = new MachinesItemListAdapter(getContext(), c, this, this.mainActivity);
         ListView lst = (ListView) view.findViewById(R.id.listView);
         lst.setAdapter(this.listAdapter);
+
+        this.txt_search = (TextView)view.findViewById(R.id.text_search);
+
+        view.findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogSearch();
+            }
+        });
 
         this.load();
 
@@ -59,11 +73,50 @@ public class FragmentMachines extends Fragment {
     }
 
     public void load() {
-        Cursor c = this.db.getMachines();
-        Bundle b = new Bundle();
+        if(this.searchFilter.isEmpty()) {
+            this.txt_search.setText("No filter");
+        } else {
+            this.txt_search.setText("Searching \"" + this.searchFilter + "\" serial number");
+        }
+        Cursor c = this.db.getFilteredMachines(this.searchFilter, null, "asc");
 
         this.listAdapter.changeCursor(c);
         this.listAdapter.notifyDataSetChanged();
+    }
+
+    private void openDialogSearch() {
+        AlertDialog ad;
+
+        ad = new AlertDialog.Builder(getContext()).create();
+        ad.setTitle("");
+        ad.setMessage("Search serial number");
+
+        // Ahora forzamos que aparezca el editText
+        final EditText edtValor = new EditText(getContext());
+        edtValor.setText(this.searchFilter);
+        ad.setView(edtValor);
+
+        ad.setButton(AlertDialog.BUTTON_POSITIVE, "Insert", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String val = "";
+                try {
+                    val = edtValor.getText().toString();
+                    searchFilter = val;
+                    load();
+                } catch (Exception e) {
+                    edtValor.setError( "Input needs to be a number!");
+                }
+
+            }
+        });
+
+        ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // no fem res.
+            }
+        });
+        ad.show();
     }
 }
 
