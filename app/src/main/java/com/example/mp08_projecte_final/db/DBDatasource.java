@@ -65,7 +65,6 @@ public class DBDatasource {
             orderBy += " " + ord;
         }
         String query = "select * from machines" + where + " " + orderBy;
-        Log.d("asdf", query);
         return dbR.rawQuery(query, null);
     }
 
@@ -77,14 +76,14 @@ public class DBDatasource {
         return dbR.rawQuery("select * from machines where _id=" + (id), null);
     }
 
-    public boolean serialNumberExists(String serialNumber) {
+    public boolean serialNumberExists(String serialNumber, int id) {
         Cursor c = this.getMachines();
         c.moveToFirst();
 
         for(int i = 0; i < c.getCount(); i++) {
             String other_serial = c.getString(c.getColumnIndexOrThrow("serial_number"));
-            Log.d("asdf", serialNumber + " = " + other_serial);
-            if(serialNumber.equals(other_serial)) return true;
+            int _id = c.getInt(c.getColumnIndexOrThrow("_id"));
+            if(serialNumber.equals(other_serial) && id != _id) return true;
             c.moveToNext();
         }
         return false;

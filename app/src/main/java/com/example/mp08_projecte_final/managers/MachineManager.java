@@ -200,7 +200,7 @@ public class MachineManager extends AppCompatActivity {
             insert = false;
         }
 
-        if(this.db.serialNumberExists(serial)) {
+        if(this.db.serialNumberExists(serial, this.machineId)) {
             input_serial.setError("Serial number already exists!");
             insert = false;
         }
