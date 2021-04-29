@@ -205,8 +205,6 @@ public class MachineManager extends AppCompatActivity {
             insert = false;
         }
 
-        //TODO: Check telf is correct
-
         if(!insert) return;
         ContentValues values = new ContentValues();
 

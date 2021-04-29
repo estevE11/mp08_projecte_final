@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="No search"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/btn_search"
         app:layout_constraintStart_toEndOf="@+id/btn_search"
         app:layout_constraintTop_toTopOf="@+id/btn_search" />
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="No filter"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/btn_filter"
         app:layout_constraintStart_toEndOf="@+id/btn_filter"
         app:layout_constraintTop_toTopOf="@+id/btn_filter" />
